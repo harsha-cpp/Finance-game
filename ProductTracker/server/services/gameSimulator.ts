@@ -335,6 +335,8 @@ class GameSimulator {
    * Get average revenue per customer based on business type
    */
   private getRevenuePerCustomer(business: Business): number {
+    const baseRevenue = 100; // Base revenue per customer (can be adjusted)
+    
     switch (business.type) {
       case "Tech":
         return baseRevenue * 1.2;

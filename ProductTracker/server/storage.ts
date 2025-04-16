@@ -5,7 +5,7 @@ import {
   decisions, type Decision, type InsertDecision,
   events, type Event, type InsertEvent,
   competitors, type Competitor, type InsertCompetitor,
-  BusinessType
+  BusinessType, FundingType, DecisionType
 } from "@shared/schema";
 
 // Define the storage interface for all entity types
@@ -116,7 +116,13 @@ export class MemStorage implements IStorage {
   async createCompany(insertCompany: InsertCompany): Promise<Company> {
     const id = this.currentId.companies++;
     const createdAt = new Date();
-    const company: Company = { ...insertCompany, id, createdAt };
+    const company: Company = {
+      ...insertCompany,
+      id,
+      createdAt,
+      type: insertCompany.type as BusinessType,
+      fundingType: insertCompany.fundingType as FundingType
+    };
     this.companies.set(id, company);
     return company;
   }
@@ -165,7 +171,12 @@ export class MemStorage implements IStorage {
   async createDecision(insertDecision: InsertDecision): Promise<Decision> {
     const id = this.currentId.decisions++;
     const createdAt = new Date();
-    const newDecision: Decision = { ...insertDecision, id, createdAt };
+    const newDecision: Decision = {
+      ...insertDecision,
+      id,
+      createdAt,
+      type: insertDecision.type as DecisionType
+    };
     
     const companyDecisions = this.decisions.get(insertDecision.companyId) || [];
     companyDecisions.push(newDecision);
@@ -197,9 +208,9 @@ export class MemStorage implements IStorage {
   }
 
   async resolveEvent(id: number): Promise<Event | undefined> {
-    for (const [companyId, events] of this.events.entries()) {
-      const eventIndex = events.findIndex(e => e.id === id);
-      if (eventIndex >= 0) {
+    for (const [companyId, events] of Array.from(this.events.entries())) {
+      const eventIndex = events.findIndex((e: Event) => e.id === id);
+      if (eventIndex !== -1) {
         const event = events[eventIndex];
         const updatedEvent = { ...event, resolved: true };
         events[eventIndex] = updatedEvent;
@@ -218,7 +229,12 @@ export class MemStorage implements IStorage {
   async createCompetitor(insertCompetitor: InsertCompetitor): Promise<Competitor> {
     const id = this.currentId.competitors++;
     const createdAt = new Date();
-    const newCompetitor: Competitor = { ...insertCompetitor, id, createdAt };
+    const newCompetitor: Competitor = {
+      ...insertCompetitor,
+      id,
+      createdAt,
+      type: insertCompetitor.type as BusinessType
+    };
     
     const companyCompetitors = this.competitors.get(insertCompetitor.companyId) || [];
     companyCompetitors.push(newCompetitor);
@@ -228,9 +244,9 @@ export class MemStorage implements IStorage {
   }
 
   async updateCompetitor(id: number, updates: Partial<Competitor>): Promise<Competitor | undefined> {
-    for (const [companyId, competitors] of this.competitors.entries()) {
-      const competitorIndex = competitors.findIndex(c => c.id === id);
-      if (competitorIndex >= 0) {
+    for (const [companyId, competitors] of Array.from(this.competitors.entries())) {
+      const competitorIndex = competitors.findIndex((c: Competitor) => c.id === id);
+      if (competitorIndex !== -1) {
         const competitor = competitors[competitorIndex];
         const updatedCompetitor = { ...competitor, ...updates };
         competitors[competitorIndex] = updatedCompetitor;

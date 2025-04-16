@@ -31,12 +31,12 @@ class GameSimulator {
     const marketShares = [0.5, 0.3, 0.15];
     
     return competitorNames.map((name, index) => ({
-      businessId: business.id,
+      companyId: business.id,
       name,
       type: business.type,
-      marketShare: marketShares[index],
-      strength: 7 + Math.floor(Math.random() * 3), // 7-9 strength
-      focus: competitorTypes[index % competitorTypes.length]
+      marketShare: 5 + Math.random() * 15,
+      strength: 50 + Math.floor(Math.random() * 50),
+      focus: this.getCompetitorFocus(business.type)
     }));
   }
   
@@ -336,16 +336,16 @@ class GameSimulator {
    */
   private getRevenuePerCustomer(business: Business): number {
     switch (business.type) {
-      case "tech":
-        return 250; // SaaS model
-      case "ecommerce":
-        return 100; // Lower per-customer but potentially higher volume
-      case "service":
-        return 500; // Service businesses charge more per customer
-      case "manufacturing":
-        return 350; // Medium-range per customer
+      case "Tech":
+        return baseRevenue * 1.2;
+      case "E-commerce":
+        return baseRevenue * 1.1;
+      case "Service":
+        return baseRevenue * 0.9;
+      case "Manufacturing":
+        return baseRevenue * 1.0;
       default:
-        return 200;
+        return baseRevenue;
     }
   }
   
@@ -422,16 +422,16 @@ class GameSimulator {
     
     // Adjust multiple based on business type
     switch (business.type) {
-      case "tech":
+      case "Tech":
         revenueMultiple = 8; // Tech companies often have higher multiples
         break;
-      case "ecommerce":
+      case "E-commerce":
         revenueMultiple = 3;
         break;
-      case "service":
+      case "Service":
         revenueMultiple = 2;
         break;
-      case "manufacturing":
+      case "Manufacturing":
         revenueMultiple = 1.5;
         break;
     }

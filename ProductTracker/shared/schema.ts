@@ -170,3 +170,119 @@ export const fundingOptions = [
   { id: "bootstrap", name: "Bootstrap with current revenue", equity: 0, amount: 0 },
   { id: "partnership", name: "Strategic Partnership", equity: 10, amount: 1000000 },
 ];
+
+// Extended types for the business game
+export interface FinancialRecord {
+  id: number;
+  businessId: number;
+  quarter: number;
+  year: number;
+  revenue: number;
+  expenses: number;
+  profit: number;
+  marketingCost: number;
+  developmentCost: number;
+  operationsCost: number;
+  hrCost: number;
+  otherCosts: number;
+  createdAt: Date;
+}
+
+export interface MentorAdvice {
+  id: number;
+  businessId: number;
+  type: "financial" | "marketing" | "product" | "hr";
+  title: string;
+  content: string;
+  advice: string;
+  relatedTo: string;
+  quarter: number;
+  year: number;
+  createdAt: Date;
+}
+
+export interface DecisionOption {
+  id: string;
+  title: string;
+  description: string;
+  cost: number;
+  impact: {
+    cash?: number;
+    revenue?: number;
+    customers?: number;
+    marketShare?: number;
+    employees?: number;
+    valuation?: number;
+    productProgress?: number;
+    expenses?: number;
+    other?: Record<string, unknown>;
+  };
+}
+
+export interface DecisionConsequence {
+  id: string;
+  title: string;
+  description: string;
+  probability: number;
+  impact: {
+    cash?: number;
+    revenue?: number;
+    customers?: number;
+    marketShare?: number;
+    employees?: number;
+    valuation?: number;
+    productProgress?: number;
+    expenses?: number;
+    other?: Record<string, unknown>;
+  };
+}
+
+export interface DecisionWithDetails extends Decision {
+  title: string;
+  description: string;
+  urgency: 'low' | 'medium' | 'high' | 'urgent';
+  options: DecisionOption[];
+  consequences: DecisionConsequence[];
+  isCompleted: boolean;
+}
+
+export interface EventWithDetails extends Event {
+  title: string;
+  icon: string;
+  iconColor: string;
+}
+
+export interface CompetitorWithDetails extends Competitor {
+  focus: string;
+}
+
+export type InsertMentorAdvice = Omit<MentorAdvice, "id" | "createdAt">;
+export type InsertFinancialRecord = Omit<FinancialRecord, "id" | "createdAt">;
+export type InsertDecision = Omit<Decision, "id" | "createdAt">;
+export type InsertEvent = Omit<Event, "id" | "createdAt">;
+export type InsertCompetitor = Omit<Competitor, "id" | "createdAt">;
+
+// Business interface
+export interface Business extends Company {
+  currentCash: number;
+  initialCapital: number;
+  quarterlyBurnRate: number;
+  customers: number;
+  productProgress: number;
+}
+
+// AI Recommendation interface
+export interface AIRecommendation {
+  recommendation: string;
+  confidence: number;
+  reasoning: string;
+}
+
+export function getAIRecommendation(decision: DecisionWithDetails): AIRecommendation {
+  // Implementation can be added later
+  return {
+    recommendation: '',
+    confidence: 0,
+    reasoning: ''
+  };
+}

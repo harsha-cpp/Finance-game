@@ -11,98 +11,87 @@ class AIMentor {
   async generateInitialAdvice(business: Business): Promise<InsertMentorAdvice[]> {
     const advice: InsertMentorAdvice[] = [];
     
-    // Add general startup advice
+    // General welcome advice
     advice.push({
       businessId: business.id,
-      type: "general",
-      title: "Welcome to Your Startup Journey",
-      content: "Focus on validating your business model and finding product-market fit before scaling. Listen closely to early customer feedback to refine your offering.",
-      relatedTo: "startup_launch",
+      advice: "Welcome to your new business venture! I'll be your AI mentor, helping you make strategic decisions.",
+      type: "general" as const,
+      title: "Welcome",
+      content: "Let's start building your business together!",
       quarter: business.currentQuarter,
       year: business.currentYear
     });
     
-    // Add business-type specific advice
+    // Business type specific advice
     switch (business.type) {
-      case "tech":
+      case "Tech":
         advice.push({
           businessId: business.id,
-          type: "product",
-          title: "Tech Product Development Strategy",
-          content: "For tech startups, building a Minimum Viable Product (MVP) is crucial. Focus on core functionality that solves your target users' key problems rather than a feature-rich solution from the start.",
-          relatedTo: "tech_startup",
+          advice: "Focus on rapid product development and innovation. Tech moves fast!",
+          type: "product" as const,
+          title: "Tech Strategy",
+          content: "Consider investing in R&D and hiring skilled developers.",
           quarter: business.currentQuarter,
           year: business.currentYear
         });
         break;
-      case "ecommerce":
+      case "E-commerce":
         advice.push({
           businessId: business.id,
-          type: "marketing",
-          title: "E-commerce Marketing Fundamentals",
-          content: "In e-commerce, your customer acquisition strategy is critical. Focus on building a strong brand identity and consider optimizing your marketing spend on platforms where your target audience spends their time.",
-          relatedTo: "ecommerce_startup",
+          advice: "Build a strong online presence and optimize your customer acquisition funnel.",
+          type: "marketing" as const,
+          title: "E-commerce Strategy",
+          content: "Focus on digital marketing and customer experience.",
           quarter: business.currentQuarter,
           year: business.currentYear
         });
         break;
-      case "service":
+      case "Service":
         advice.push({
           businessId: business.id,
-          type: "operations",
-          title: "Service Business Operations",
-          content: "For service businesses, systematizing your operations early on is crucial for scaling. Document processes, create quality standards, and consider how you'll maintain service quality as you grow.",
-          relatedTo: "service_startup",
+          advice: "Quality service delivery and customer satisfaction should be your top priorities.",
+          type: "operations" as const,
+          title: "Service Strategy",
+          content: "Invest in training and customer service infrastructure.",
           quarter: business.currentQuarter,
           year: business.currentYear
         });
         break;
-      case "manufacturing":
+      case "Manufacturing":
         advice.push({
           businessId: business.id,
-          type: "financial",
-          title: "Manufacturing Financial Strategy",
-          content: "Manufacturing requires significant capital investment. Carefully manage your cash flow and consider equipment leasing options rather than outright purchases in the early stages.",
-          relatedTo: "manufacturing_startup",
+          advice: "Optimize your production processes and maintain quality control.",
+          type: "operations" as const,
+          title: "Manufacturing Strategy",
+          content: "Focus on efficiency and quality control systems.",
           quarter: business.currentQuarter,
           year: business.currentYear
         });
         break;
     }
     
-    // Add advice based on funding type
-    if (business.fundingType === "bootstrapped") {
+    // Funding advice based on type
+    if (business.fundingType === "Bootstrap") {
       advice.push({
         businessId: business.id,
-        type: "financial",
-        title: "Bootstrapping Strategy",
-        content: "As a bootstrapped company, cash conservation is essential. Focus on reaching profitability quickly, prioritize revenue-generating activities, and be cautious with fixed overhead expenses.",
-        relatedTo: "bootstrapped_funding",
+        advice: "Manage your cash flow carefully. Every dollar counts when bootstrapping.",
+        type: "financial" as const,
+        title: "Bootstrap Strategy",
+        content: "Focus on revenue generation and cost control.",
         quarter: business.currentQuarter,
         year: business.currentYear
       });
-    } else if (business.fundingType === "angel" || business.fundingType === "venture") {
+    } else if (business.fundingType === "Seed" || business.fundingType === "Series A") {
       advice.push({
         businessId: business.id,
-        type: "financial",
-        title: "Venture-Backed Growth Strategy",
-        content: "With your investment funding, focus on achieving significant growth metrics that will position you well for future funding rounds. Monitor your burn rate carefully in relation to your growth targets.",
-        relatedTo: "venture_funding",
+        advice: "Use your funding wisely. Focus on growth and hitting key milestones.",
+        type: "financial" as const,
+        title: "Funding Strategy",
+        content: "Balance growth with runway management.",
         quarter: business.currentQuarter,
         year: business.currentYear
       });
     }
-    
-    // Add initial marketing advice
-    advice.push({
-      businessId: business.id,
-      type: "marketing",
-      title: "Early-Stage Marketing Focus",
-      content: "At this stage, focus on targeted marketing rather than broad campaigns. Identify and engage with early adopters who will provide valuable feedback and potentially become advocates for your product.",
-      relatedTo: "marketing_strategy",
-      quarter: business.currentQuarter,
-      year: business.currentYear
-    });
     
     return advice;
   }

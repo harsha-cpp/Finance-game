@@ -6,6 +6,10 @@
     {
       "src": "server/index.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "client/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -14,8 +18,11 @@
       "dest": "/server/index.ts"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/client/index.html"
     }
   ]
 } 
